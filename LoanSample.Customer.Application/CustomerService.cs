@@ -13,7 +13,7 @@ using Volo.Abp.Uow;
 
 namespace LoanSample.Customer.Application
 {
-    [Authorize]
+    //[Authorize]
     public class CustomerService : ApplicationService, ICustomerService
     {
         private readonly IRepository<Domain.Entity.Customer> _customerRepo;

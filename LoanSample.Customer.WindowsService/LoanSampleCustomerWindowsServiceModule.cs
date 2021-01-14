@@ -3,7 +3,6 @@ using LoanSample.Customer.EntityFrameworkCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.OpenApi.Models;
 using Volo.Abp;
 using Volo.Abp.AspNetCore.Mvc;
 using Volo.Abp.Autofac;
@@ -11,24 +10,22 @@ using Volo.Abp.Modularity;
 using Microsoft.AspNetCore.Hosting;
 using System.Net.Http;
 using Microsoft.Extensions.Configuration;
-//using Volo.Abp.AspNetCore.Authentication.JwtBearer;
-//using Volo.Abp.Account.Web;
+using Microsoft.OpenApi.Models;
 
-namespace LoanSample.Customer.Api
+namespace LoanSample.Customer.WindowsService
 {
-
     [DependsOn(typeof(AbpAspNetCoreMvcModule))]
-    [DependsOn(typeof(AbpAutofacModule), 
-        typeof(LoanSampleCustomerApplicationModule),
-        typeof(LoanSampleCustomerEntityFrameworkCoreModule)
-        //typeof(AbpAspNetCoreAuthenticationJwtBearerModule),
-        //typeof(AbpAccountWebIdentityServerModule)
-        )]
+    [DependsOn(typeof(AbpAutofacModule),
+    typeof(LoanSampleCustomerApplicationModule),
+    typeof(LoanSampleCustomerEntityFrameworkCoreModule)
+    )]
 
-    public class LoanSampleCustomerApiModule:AbpModule
+    public class LoanSampleCustomerWindowsServiceModule : AbpModule
     {
         public override void ConfigureServices(ServiceConfigurationContext context)
         {
+            //context.Services.AddHostedService<MyProjectNameHostedService>();
+
             Configure<AbpAspNetCoreMvcOptions>(options =>
             {
                 options.ConventionalControllers.Create(typeof(CustomerService).Assembly);
@@ -54,12 +51,12 @@ namespace LoanSample.Customer.Api
                 options.SwaggerEndpoint("/swagger/v1/swagger.json", "Customer API");
             });
 
-          
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
-            
+
             app.UseCorrelationId();
             app.UseVirtualFiles();
             app.UseRouting();
@@ -74,20 +71,6 @@ namespace LoanSample.Customer.Api
             app.UseAuditing();
             app.UseConfiguredEndpoints();
         }
-
-
-
-        //private void ConfigureAuthentication(ServiceConfigurationContext context, IConfiguration configuration)
-        //{
-
-        //    context.Services.AddAuthentication("Bearer")
-        //        .AddIdentityServerAuthentication(options =>
-        //        {
-        //            options.Authority = configuration["AuthServer:Authority"];
-        //            options.ApiName = configuration["AuthServer:ApiName"];
-        //            options.RequireHttpsMetadata = false;
-        //        });
-        //}
 
 
 
